@@ -10,11 +10,20 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+
+const allowedOrigins = [process.env.FRONTEND_URL];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
-
 app.use('/api/tasks', verifyToken, taskRoutes);
 
 mongoose
